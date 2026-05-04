@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarkdownForge - Premium Editor</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Highlight.js Theme (Atom One Dark) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
-    
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="app-container">
         <header class="app-header">
@@ -27,6 +32,10 @@
                 <h1>Markdown<span>Forge</span></h1>
             </div>
             <div class="toolbar">
+                <a href="https://github.com/CevdetTufan/markdown-editor" target="_blank" rel="noopener noreferrer"
+                    class="btn" title="View on GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
                 <button id="btn-theme" class="btn" title="Toggle Light/Dark Theme">
                     <i class="fa-solid fa-sun"></i>
                 </button>
@@ -51,7 +60,7 @@
                 </div>
                 <textarea id="editor" placeholder="Start typing your Markdown here..."></textarea>
             </div>
-            
+
             <div class="resizer" id="resizer"></div>
 
             <div class="pane preview-pane" id="preview-pane">
@@ -67,8 +76,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    
+
     <!-- Custom JS -->
     <script src="app.js"></script>
 </body>
+
 </html>
