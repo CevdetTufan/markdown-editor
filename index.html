@@ -42,14 +42,16 @@
         </header>
 
         <main class="main-content">
-            <div class="pane editor-pane">
+            <div class="pane editor-pane" id="editor-pane">
                 <div class="pane-header">
                     <i class="fa-solid fa-code"></i> Editor
                 </div>
                 <textarea id="editor" placeholder="Start typing your Markdown here..."></textarea>
             </div>
             
-            <div class="pane preview-pane">
+            <div class="resizer" id="resizer"></div>
+
+            <div class="pane preview-pane" id="preview-pane">
                 <div class="pane-header">
                     <i class="fa-solid fa-eye"></i> Preview
                 </div>

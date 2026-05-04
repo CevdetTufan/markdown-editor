@@ -121,6 +121,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 7. Resizer Logic
+    const resizer = document.getElementById('resizer');
+    const editorPane = document.getElementById('editor-pane');
+    const mainContent = document.querySelector('.main-content');
+    
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        document.body.style.cursor = 'col-resize';
+        // Prevent text selection during resize
+        document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        
+        // Calculate new width based on mouse position relative to container
+        const containerRect = mainContent.getBoundingClientRect();
+        let newWidth = e.clientX - containerRect.left;
+        
+        // Constrain width between 20% and 80%
+        const minWidth = containerRect.width * 0.2;
+        const maxWidth = containerRect.width * 0.8;
+        
+        if (newWidth < minWidth) newWidth = minWidth;
+        if (newWidth > maxWidth) newWidth = maxWidth;
+        
+        // Apply new width percentage
+        const widthPercentage = (newWidth / containerRect.width) * 100;
+        editorPane.style.width = `${widthPercentage}%`;
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = 'default';
+            document.body.style.userSelect = 'auto';
+        }
+    });
+
     // --- Initialization ---
     const init = () => {
         const savedContent = localStorage.getItem('markdown-forge-content');
