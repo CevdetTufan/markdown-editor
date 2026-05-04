@@ -2,6 +2,8 @@
 
 ![MarkdownForge Preview](https://img.shields.io/badge/Status-Active-success) ![License](https://img.shields.io/badge/License-MIT-blue)
 
+🚀 **[Try the Live Demo Here!](https://cevdettufan.github.io/markdown-editor/)**
+
 **MarkdownForge** is a beautiful, premium, and fully browser-based Markdown editor and viewer. It is designed to work entirely client-side without any back-end requirements, databases, or build steps. Just open the HTML file, and you are ready to write.
 
 ## ✨ Features
