@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCopy = document.getElementById('btn-copy');
     const btnDownload = document.getElementById('btn-download');
     const btnClear = document.getElementById('btn-clear');
-    
+    const btnTheme = document.getElementById('btn-theme');
     // --- Initialize Marked.js with Highlight.js ---
     marked.setOptions({
         highlight: function (code, lang) {
@@ -162,8 +162,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 8. Theme Toggle Logic
+    const themeIcon = btnTheme.querySelector('i');
+    
+    const updateThemeIcon = (theme) => {
+        if (theme === 'dark') {
+            themeIcon.className = 'fa-solid fa-sun';
+        } else {
+            themeIcon.className = 'fa-solid fa-moon';
+        }
+    };
+
+    btnTheme.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('markdown-forge-theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+
     // --- Initialization ---
     const init = () => {
+        // Load theme
+        const savedTheme = localStorage.getItem('markdown-forge-theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
         const savedContent = localStorage.getItem('markdown-forge-content');
         if (savedContent) {
             editor.value = savedContent;

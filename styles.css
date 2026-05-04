@@ -10,8 +10,25 @@
     --danger-color: #f85149;
     --danger-hover: #ff7b72;
     --success-color: #238636;
-    --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+[data-theme="light"] {
+    --bg-dark: #f6f8fa;
+    --bg-panel: #ffffff;
+    --bg-panel-hover: #f3f4f6;
+    --border-color: #d0d7de;
+    --text-main: #24292f;
+    --text-muted: #57606a;
+    --accent-color: #0969da;
+    --accent-hover: #0349b4;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: #afb8c1;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: #8c959f;
 }
 
 * {
