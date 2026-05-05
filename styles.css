@@ -401,3 +401,43 @@ body {
         display: none; /* Hide text on small screens */
     }
 }
+
+/* Print Styles for PDF Export */
+@media print {
+    body, .app-container, .main-content, .preview-pane {
+        height: auto !important;
+        overflow: visible !important;
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    .app-header, .editor-pane, .resizer, .pane-header, .notification {
+        display: none !important;
+    }
+
+    #preview {
+        overflow: visible !important;
+        padding: 0 !important;
+        background-color: white !important;
+    }
+    
+    .markdown-body {
+        max-width: 100% !important;
+        color: black !important;
+    }
+    
+    /* Ensure code blocks don't break across pages and text is selectable */
+    pre, blockquote {
+        page-break-inside: avoid;
+    }
+    
+    /* Optionally force light theme colors for printing */
+    .markdown-body pre {
+        background-color: #f6f8fa !important;
+        border: 1px solid #d0d7de !important;
+    }
+    
+    .markdown-body code {
+        color: #24292f !important;
+    }
+}

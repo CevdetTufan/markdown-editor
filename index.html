@@ -47,6 +47,10 @@
                     <i class="fa-solid fa-download"></i>
                     <span>Download .md</span>
                 </button>
+                <button id="btn-download-pdf" class="btn btn-primary" title="Download PDF File" style="background-color: var(--accent-color); border-color: var(--accent-color);">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Download PDF</span>
+                </button>
                 <button id="btn-clear" class="btn btn-danger" title="Clear Editor">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
@@ -85,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const preview = document.getElementById('preview');
     const btnCopy = document.getElementById('btn-copy');
     const btnDownload = document.getElementById('btn-download');
+    const btnDownloadPdf = document.getElementById('btn-download-pdf');
     const btnClear = document.getElementById('btn-clear');
     const btnTheme = document.getElementById('btn-theme');
     // --- Initialize Marked.js with Highlight.js ---
@@ -173,6 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
         
         showNotification('File Downloaded!');
+    });
+
+    // 4.5. Toolbar: Download PDF
+    btnDownloadPdf.addEventListener('click', () => {
+        // Use native print functionality to get text-selectable, perfectly scaled vector PDF
+        setTimeout(() => {
+            showNotification('Lütfen yazıcı hedefini "PDF olarak kaydet" (Save as PDF) seçin.');
+        }, 100);
+        window.print();
     });
 
     // 5. Toolbar: Clear Editor
