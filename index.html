@@ -80,6 +80,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    
+    <!-- PDF Generation Libraries (Text-based, no print dialog) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/browser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@14.1.0/dist/twemoji.min.js"></script>
 
     <!-- Custom JS -->
     <script>
@@ -181,12 +187,92 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 4.5. Toolbar: Download PDF
-    btnDownloadPdf.addEventListener('click', () => {
-        // Use native print functionality to get text-selectable, perfectly scaled vector PDF
-        setTimeout(() => {
-            showNotification('Lütfen yazıcı hedefini "PDF olarak kaydet" (Save as PDF) seçin.');
-        }, 100);
-        window.print();
+    btnDownloadPdf.addEventListener('click', async () => {
+        showNotification('Generating PDF...');
+        
+        try {
+            // Clone preview to process images without affecting UI
+            const clone = preview.cloneNode(true);
+            
+            // Parse emojis into images so PDFMake can render them
+            if (window.twemoji) {
+                twemoji.parse(clone, {
+                    base: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/',
+                    folder: '72x72',
+                    ext: '.png'
+                });
+                // Fix emoji sizes for PDF
+                clone.querySelectorAll('.emoji').forEach(img => {
+                    img.style.width = '12px';
+                    img.style.height = '12px';
+                    img.style.margin = '0 2px';
+                    img.style.verticalAlign = '-2px';
+                });
+            }
+
+            const images = clone.querySelectorAll('img');
+            
+            // Convert all images to Base64 to avoid pdfMake virtual file system errors
+            const promises = Array.from(images).map(img => {
+                return new Promise((resolve) => {
+                    const imgObj = new Image();
+                    imgObj.crossOrigin = 'Anonymous';
+                    imgObj.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = imgObj.naturalWidth || imgObj.width;
+                        canvas.height = imgObj.naturalHeight || imgObj.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(imgObj, 0, 0);
+                        try {
+                            img.src = canvas.toDataURL('image/png');
+                            resolve();
+                        } catch (e) {
+                            img.remove(); // Remove if CORS blocks canvas read
+                            resolve();
+                        }
+                    };
+                    imgObj.onerror = () => {
+                        img.remove(); // Remove broken images
+                        resolve();
+                    };
+                    imgObj.src = img.src;
+                });
+            });
+            
+            await Promise.all(promises);
+            
+            const htmlContent = clone.innerHTML;
+            
+            // Convert HTML to pdfmake format, preserving styles via window object
+            const pdfContent = htmlToPdfmake(htmlContent, {
+                window: window,
+                tableAutoSize: true
+            });
+            
+            const docDefinition = {
+                content: pdfContent,
+                pageSize: 'A4',
+                pageMargins: [ 40, 60, 40, 60 ],
+                defaultStyle: {
+                    fontSize: 11
+                }
+            };
+            
+            pdfMake.createPdf(docDefinition).getBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'document.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showNotification('PDF Downloaded!');
+            });
+        } catch (err) {
+            showNotification('Failed to generate PDF', true);
+            console.error(err);
+        }
     });
 
     // 5. Toolbar: Clear Editor
